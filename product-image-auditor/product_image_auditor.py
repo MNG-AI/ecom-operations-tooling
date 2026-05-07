@@ -42,7 +42,7 @@ from threading import Lock
 # CONFIGURATION — update paths and column numbers as needed
 # -------------------------------------------------------
 
-FILE_PATH = r"C:\Users\scarter\OneDrive - Shoe Carnival, Inc\Sample Request Lists\Master Sample List 2026.xlsx"
+FILE_PATH = r"C:\path\to\your\Master Sample List.xlsx"
 
 BASE_URL = "https://i8.amplience.net/s/scvl/"
 
