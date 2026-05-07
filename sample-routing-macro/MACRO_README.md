@@ -14,12 +14,27 @@ Before this existed, sorting samples by department required manual copy-paste ac
  
 ---
  
+## Files in This Folder
+ 
+| File | Version | Description |
+|---|---|---|
+| `CopyAllSamplesByBgrp.bas` | v1 | Core routing logic — maps BGRP codes to department tabs and copies rows |
+| `CopyAllSamplesByBgrp_Clean.bas` | v2 | Adds automatic duplicate removal by Ecom Color # after routing; uses dynamic last-row detection |
+ 
+**Use v2 (`_Clean`) for production.** v1 is retained for reference.
+ 
+---
+ 
 ## How It Works
  
+**Routing (both versions):**
 1. Reads each row from the **"Exceptions Report"** sheet starting at row 3
 2. Checks the BGRP code in **Column E**
 3. Looks up that code in a pre-defined department mapping
 4. Copies columns **A through T** to the next available row in the matching department tab
+**Duplicate Removal (v2 only):**  
+After all rows are routed, scans every department tab and removes rows where **Column M (Ecom Color #)** is duplicated. Columns U and V (notes fields) are preserved.
+ 
 ---
  
 ## Department Mappings
@@ -45,21 +60,36 @@ Before this existed, sorting samples by department required manual copy-paste ac
  
 - Microsoft Excel with macros enabled (.xlsm file)
 - A sheet named exactly **"Exceptions Report"** with:
-  - Data starting at **row 3** (rows 1–2 reserved for headers)
+  - Data starting at **row 3** (rows 1–2 reserved for title/headers)
   - BGRP codes in **Column E**
   - Data spanning **Columns A through T**
-- All department tabs listed above must exist in the workbook with exact tab names
+  - Notes in **Columns U and V** (v2 preserves these during dedup)
+- All department tabs listed above must exist with exact tab names
 ---
  
-## How to Run It
+## How to Run
  
 1. Open your `.xlsm` workbook
 2. Press `Alt + F11` to open the Visual Basic Editor
 3. In the left panel, find your workbook under **"VBAProject"**
 4. Right-click **"Modules"** → **Insert** → **Module**
-5. Paste the contents of `CopyAllSamplesByBgrp.bas` into the module
+5. Paste the contents of `CopyAllSamplesByBgrp_Clean.bas` into the module
 6. Close the VBA Editor
-7. Press `Alt + F8`, select **CopyAllSamplesByBgrp**, and click **Run**
+7. Press `Alt + F8`, select **CopyAllSamplesByBgrp_Clean**, click **Run**
+A confirmation message will appear when routing and dedup are complete.
+ 
+---
+ 
+## What Changed Between Versions
+ 
+| Feature | v1 | v2 |
+|---|---|---|
+| BGRP routing | ✅ | ✅ |
+| Row limit method | Hardcoded (3000 rows) | Dynamic (detects last row) |
+| Duplicate removal | ❌ | ✅ — by Ecom Color # (Col M) |
+| Notes preservation | N/A | ✅ — Columns U and V kept |
+| Completion message | Basic | Includes dedup confirmation |
+ 
 ---
  
 ## Context
