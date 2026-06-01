@@ -1,6 +1,6 @@
 """
 ============================================================
-Script:   product_image_auditor.py
+Script:   audit_all_tabs.py
 Author:   Stanley Carter
 Purpose:  Audits product image availability on the Amplience
           CDN for each SKU in the master sample list workbook.
